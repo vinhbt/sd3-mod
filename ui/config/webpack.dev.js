@@ -1,8 +1,5 @@
-/**
- * @author: @AngularClass
- */
-
 const helpers = require('./helpers');
+const path = require('path');
 const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 const webpackMergeDll = webpackMerge.strategy({plugins: 'replace'});
 const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
@@ -28,7 +25,6 @@ const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   ENV: ENV,
   HMR: HMR
 });
-
 
 const DllBundlesPlugin = require('webpack-dll-bundles-plugin').DllBundlesPlugin;
 
@@ -89,48 +85,6 @@ module.exports = function (options) {
       libraryTarget: 'var',
     },
 
-    module: {
-
-      rules: [
-       {
-         test: /\.ts$/,
-         use: [
-           {
-             loader: 'tslint-loader',
-             options: {
-               configFile: 'tslint.json'
-             }
-           }
-         ],
-         exclude: [/\.(spec|e2e)\.ts$/]
-       },
-
-        /*
-         * css loader support for *.css files (styles directory only)
-         * Loads external css styles into the DOM, supports HMR
-         *
-         */
-        {
-          test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
-          include: [helpers.root('src', 'styles')]
-        },
-
-        /*
-         * sass loader support for *.scss files (styles directory only)
-         * Loads external sass styles into the DOM, supports HMR
-         *
-         */
-        {
-          test: /\.scss$/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
-          include: [helpers.root('src', 'styles')]
-        },
-
-      ]
-
-    },
-
     plugins: [
 
       /**
@@ -165,7 +119,7 @@ module.exports = function (options) {
               name: 'zone.js',
               path: 'zone.js/dist/long-stack-trace-zone.js'
             },
-              'ts-helpers'
+            'ts-helpers',
           ],
           vendor: [
             '@angular/platform-browser',
@@ -271,4 +225,4 @@ module.exports = function (options) {
     }
 
   });
-}
+};
